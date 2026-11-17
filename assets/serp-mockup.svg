@@ -1,0 +1,43 @@
+<svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #16283F; }
+      .label { font-family: 'Courier New', monospace; font-size: 13px; fill: rgba(246,244,239,0.5); }
+      .row { fill: rgba(246,244,239,0.05); }
+      .row-you { fill: rgba(232,181,77,0.14); stroke: rgba(232,181,77,0.4); stroke-width: 1; }
+      .biz { font-family: Arial, sans-serif; font-size: 15px; fill: rgba(246,244,239,0.6); }
+      .biz-you { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #F6F4EF; }
+      .pos-circle { fill: rgba(246,244,239,0.1); }
+      .pos-circle-you { fill: #E8B54D; }
+      .pos-text { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; fill: rgba(246,244,239,0.5); }
+      .pos-text-you { font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; fill: #0F1B2D; }
+      .card { fill: #16283F; stroke: rgba(246,244,239,0.14); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="478" height="318" rx="12" class="card"/>
+
+  <text x="28" y="42" class="label">Google search results</text>
+  <text x="28" y="62" class="label">"electrician near me"</text>
+
+  <!-- Row 1 -->
+  <rect x="24" y="86" width="432" height="52" rx="8" class="row"/>
+  <circle cx="52" cy="112" r="14" class="pos-circle"/>
+  <text x="52" y="117" text-anchor="middle" class="pos-text">1</text>
+  <text x="80" y="118" class="biz">Competitor Electrical Ltd</text>
+
+  <!-- Row 2 -->
+  <rect x="24" y="148" width="432" height="52" rx="8" class="row"/>
+  <circle cx="52" cy="174" r="14" class="pos-circle"/>
+  <text x="52" y="179" text-anchor="middle" class="pos-text">2</text>
+  <text x="80" y="180" class="biz">City Spark Electricians</text>
+
+  <!-- Row 3 - highlighted (you) -->
+  <rect x="24" y="210" width="432" height="52" rx="8" class="row-you"/>
+  <circle cx="52" cy="236" r="14" class="pos-circle-you"/>
+  <text x="52" y="241" text-anchor="middle" class="pos-text-you">3</text>
+  <text x="80" y="242" class="biz-you">Your Business — climbing ↑</text>
+
+  <!-- Arrow indicating upward movement -->
+  <path d="M 420 236 L 420 216 L 414 222 M 420 216 L 426 222" stroke="#E8B54D" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
