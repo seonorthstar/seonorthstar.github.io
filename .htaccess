@@ -1,0 +1,55 @@
+# --- SEO Northstar: canonical host redirect (www + http -> https non-www), 19 Sep 2026 ---
+# Every page's own canonical tag already declares https://seonorthstar.co.uk (no www) as the
+# real URL. Google's crawler was finding full page content directly at the www host and at
+# plain http, with no fast server-level redirect forcing it to the canonical host, which is
+# what created the "Alternate page with proper canonical tag" / "Page with redirect" entries
+# in Search Console (flagged 19 Sep). This sends a single, immediate 301 straight to the
+# canonical https/non-www URL for any request that isn't already there, so browsers and
+# Googlebot never see duplicate content at www or http again.
+RewriteEngine On
+
+# www -> non-www (also upgrades to https in the same redirect, so no double-hop)
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
+
+# http -> https (for requests that reach here already on the non-www host)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# --- end canonical host redirect ---
+
+# --- SEO Northstar: long-cache static assets, 17 Sep 2026 ---
+# Fonts, images, and icons are static and effectively never change once shipped,
+# so they're safe to cache for a year. HTML pages are excluded on purpose since
+# those get edited regularly and should always be re-checked by the browser.
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Fonts
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
+
+  # Images / icons
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # HTML: always revalidate, never cache long
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Fonts and images: cache for a year, mark immutable so the browser doesn't
+  # even bother re-checking with the server during that year.
+  <FilesMatch "\.(woff2|woff|ttf|png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML: don't let it get cached long, so visitors always see the latest page.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+# --- end SEO Northstar cache rules ---
