@@ -107,5 +107,31 @@ og = (f'<g transform="translate({(1200 - W*sc)/2:.2f},{y0:.2f}) scale({sc:.4f})"
 write("/tmp/og.svg", svg(1200, 630, og, bg=NAVY))
 png("/tmp/og.svg", f"{REPO}/og-image.png", w=1200, h=630)
 
+
+# ---- two-line lockup "C": pin spans both lines (approved 18 Nov 2026)
+def twoline_inner(fg, star):
+    S = 100; k = S / 1000
+    cap, over = CAP * k, OVER * k; tip = 1.5 * over
+    gap = SPACE * k + TRACK * S
+    dS, wS = shaped("SEO", "sg-700", S, 0, 0, TRACK)
+    dN, wN = shaped("Northstar", "sg-700", S, 0, 0, TRACK)
+    body, mw, mh = pin_mark(fg, star)
+    ph = cap + gap + cap + over + tip; sc = ph / mh; pw = mw * sc
+    tx = pw + gap; l1 = over + cap; l2 = l1 + gap + cap
+    inner = (f'<g transform="scale({sc:.5f})">{body}</g>'
+             f'<g transform="translate({tx:.3f},{l1:.3f})"><path d="{dS}" fill="{fg}"/></g>'
+             f'<g transform="translate({tx:.3f},{l2:.3f})"><path d="{dN}" fill="{fg}"/></g>')
+    return inner, tx + max(wS, wN), ph
+
+for name, fg in (("seo-northstar-logo-2line", NAVY), ("seo-northstar-logo-2line-reverse", OFF)):
+    i, W, H = twoline_inner(fg, GOLD); write(f"{LOGO}/{name}.svg", svg(W, H, i))
+    png(f"{LOGO}/{name}.svg", f"{LOGO}/{name}.png", w=1200)
+i, W, H = twoline_inner(NAVY, NAVY); write(f"{LOGO}/seo-northstar-logo-2line-mono.svg", svg(W, H, i))
+
+# square social avatar (navy) with the two-line logo, replaces stacked version
+i, W, H = twoline_inner(OFF, GOLD); sc = 560 / W
+write("/tmp/sq.svg", svg(800, 800, f'<g transform="translate({(800 - W*sc)/2:.2f},{(800 - H*sc)/2:.2f}) scale({sc:.4f})">{i}</g>', bg=NAVY))
+png("/tmp/sq.svg", f"{REPO}/assets/logo-square.png", w=800, h=800)
+
 PRIMARY_REVERSE_W = primary_inner(OFF, GOLD)[1:]
 print("header logo aspect W/H =", PRIMARY_REVERSE_W[0] / PRIMARY_REVERSE_W[1])
